@@ -1,8 +1,7 @@
 package rest;
 
 import DTO.BookingDTO;
-import DTO.HotelDTO;
-import DTO.OneDTO;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import facades.FacadeExample;
@@ -23,6 +22,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.SecurityContext;
  
 /**
  * REST Web Service
@@ -39,6 +39,8 @@ public class DefaultResource {
     @Context
     private UriInfo context;
 
+   @Context
+    private SecurityContext context2;
    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,26 +73,28 @@ public class DefaultResource {
         return GSON.toJson(list);
     }
     @Path("/bookingsad/{name}")
-    @RolesAllowed("Admin")
     @GET
+    @RolesAllowed("admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getBookingsAdmin(@PathParam("name") String name ) throws IOException, InterruptedException, ExecutionException {
         ArrayList<BookingDTO> list =facade2.getAll(name);
         return GSON.toJson(list);
     }
-    @Path("/bookings")
+    
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/bookings")
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
-    public String BookingsDEL(String booking ) throws IOException, InterruptedException, ExecutionException {
+    public String BookingsDEL(String booking) throws IOException, InterruptedException, ExecutionException {
         BookingDTO d=GSON.fromJson(booking, BookingDTO.class);
         facade2.edit(d);
         return GSON.toJson(d);
     }
-    @Path("/bookings/{nr}")
-    @RolesAllowed("Admin")
+    
     @DELETE
+    @Path("/bookings/{nr}")
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public String getBookingsAdmin(@PathParam("nr") Long nr ) throws IOException, InterruptedException, ExecutionException {
         BookingDTO d =facade2.deleted(nr);

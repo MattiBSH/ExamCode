@@ -1,6 +1,8 @@
 package rest;
 
 
+import DTO.BookingDTO;
+import entities.Booking;
 import entities.User;
 import entities.Role;
 
@@ -34,7 +36,9 @@ public class LoginEndpointTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
-
+    private Booking f1;
+    private Booking f2;
+    private Booking f3;
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
@@ -76,7 +80,11 @@ public class LoginEndpointTest {
             //Delete existing users and roles to get a "fresh" database
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
-
+            em.createQuery("delete from Booking").executeUpdate();
+            f1 = new Booking(1, 22, "matti");
+            f2 = new Booking(2, 23, "binno2");
+            f3 = new Booking(3, 44, "bob");
+            em.createNamedQuery("Booking.deleteAllRows").executeUpdate();
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
             User user = new User("user", "test");
@@ -91,6 +99,7 @@ public class LoginEndpointTest {
             em.persist(user);
             em.persist(admin);
             em.persist(both);
+            em.persist(f1);
             
             //System.out.println("Saved test data to database");
             em.getTransaction().commit();
@@ -161,8 +170,8 @@ public class LoginEndpointTest {
 
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
-        login("user", "test");
-        given()
+                login("user", "test");
+                given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
@@ -205,7 +214,9 @@ public class LoginEndpointTest {
                 .statusCode(200)
                 .body("msg", equalTo("Hello to User: user_admin"));
     }
-
+    
+    
+    
     @Test
     public void userNotAuthenticated() {
         logOut();
@@ -232,6 +243,48 @@ public class LoginEndpointTest {
 
     
  
-
-
+//@Test
+    public void del() {
+                login("admin", "test");
+                given()
+                .contentType("application/json")
+                .header("x-access-token", securityToken)
+                .when()
+                .delete("default/bookings/1")
+                .then()
+                .statusCode(200);       
+    }
+    @Test
+    public void put() {
+                login("admin", "test");
+                given()
+                .contentType("application/json")
+                        .body(new BookingDTO(f1.getId(),1,1,"gg"))
+                .header("x-access-token", securityToken)
+                .when()
+                .put("default/bookings")
+                .then()
+                .statusCode(200);       
+    }
+@Test
+    public void get() {
+        logOut();
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/default/bookings/matti").then()
+                .statusCode(200);
+                
+    }
+@Test
+    public void add() {
+        logOut();
+                given()
+                .contentType("application/json")
+                .body(new BookingDTO(1,1,"gg"))
+                .when()
+                .post("default")
+                .then()
+                .statusCode(200);       
+    }
 }
