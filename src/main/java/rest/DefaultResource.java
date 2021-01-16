@@ -20,6 +20,7 @@ import facades.FetchFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
  
@@ -72,9 +73,27 @@ public class DefaultResource {
     @Path("/bookingsad/{name}")
     @RolesAllowed("Admin")
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getBookingsAdmin(@PathParam("name") String name ) throws IOException, InterruptedException, ExecutionException {
         ArrayList<BookingDTO> list =facade2.getAll(name);
         return GSON.toJson(list);
+    }
+    @Path("/bookings")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String BookingsDEL(String booking ) throws IOException, InterruptedException, ExecutionException {
+        BookingDTO d=GSON.fromJson(booking, BookingDTO.class);
+        facade2.edit(d);
+        return GSON.toJson(d);
+    }
+    @Path("/bookings/{nr}")
+    @RolesAllowed("Admin")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBookingsAdmin(@PathParam("nr") Long nr ) throws IOException, InterruptedException, ExecutionException {
+        BookingDTO d =facade2.deleted(nr);
+        return GSON.toJson(d);
     }
 }

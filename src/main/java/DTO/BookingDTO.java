@@ -37,10 +37,18 @@ public class BookingDTO {
             this.name=name;
         }
     public BookingDTO(Booking b) {
+            this.id=b.getId();
             this.date = b.getDate();
             this.numberOfNights = b.getNumberOfNights();
             this.price = b.getPrice();
             this.name=b.getName();
+        }
+    public BookingDTO(Long id,int numberOfNights, int price, String name) {
+            this.id=id;
+            
+            this.numberOfNights = numberOfNights;
+            this.price = price;
+            this.name=name;
         }
     public List<User> getUsers() {
         return users;

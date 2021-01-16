@@ -64,11 +64,33 @@ public class FacadeExample {
         return  list;
         
     }
+    public BookingDTO deleted(Long id){
+        EntityManager e = emf.createEntityManager();
+        e.getTransaction().begin();
+            Booking b = e.find(Booking.class, id);
+            e.remove(b);
+        e.getTransaction().commit();
+        return new BookingDTO(b);   
+    }
+    public BookingDTO edit(BookingDTO d){
+        EntityManager e = emf.createEntityManager();
+        e.getTransaction().begin();
+            Booking b = e.find(Booking.class, d.getId());
+            b.setPrice(d.getPrice());
+            b.setNumberOfNights(d.getNumberOfNights());
+            b.setName(d.getName());
+            e.persist(b);
+        e.getTransaction().commit();
+        return new BookingDTO(b);   
+    }
     public static void main(String[] args) throws IOException {
         FacadeExample f = new FacadeExample();
-        BookingDTO b = new BookingDTO(1,1,"ookokok");
-        f.add(b);
-        System.out.println(f.getAll("matti"));
+        //BookingDTO b = new BookingDTO(1,1,"");
+        //f.add(b);
+        //System.out.println(f.getAll("matti"));
+        BookingDTO d= new BookingDTO(2l,22,2322,"børge");
+        
+        f.edit(d);
         
     }
 }
