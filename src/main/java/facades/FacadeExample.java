@@ -1,10 +1,12 @@
 package facades;
 
+import DTO.BookingDTO;
 import DTO.HotelDTO;
 import DTO.HotelResults;
 import DTO.OneDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import entities.Booking;
 import entities.Hotel;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,8 +40,17 @@ public class FacadeExample {
         String raw = HttpUtils.fetchData(url);        
         return raw;
     }
+    public void add(BookingDTO b){
+        EntityManager e = emf.createEntityManager();
+        e.getTransaction().begin();
+        e.persist(new Booking(b.getNumberOfNights(),b.getPrice(),b.getName()));
+        e.getTransaction().commit();
+        
+    }
     public static void main(String[] args) throws IOException {
         FacadeExample f = new FacadeExample();
-        System.out.println(f.fetchHotels());
+        BookingDTO b = new BookingDTO(1,1,"ookokok");
+        f.add(b);
+        
     }
 }

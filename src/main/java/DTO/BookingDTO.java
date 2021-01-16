@@ -3,53 +3,51 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities;
+package DTO;
 
+import entities.Booking;
+import entities.User;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import javax.persistence.Entity;
+import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.ManyToMany;
 
 
 /**
  *
  * @author matti
  */
-@Entity
-public class Booking implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookingDTO {
     private Long id;
-    
-    @Temporal(TemporalType.DATE)
     private java.util.Date date;
     private int numberOfNights;
     private int price;
     private String name;
-    public Booking() {
-    }
-
-    public Booking(int numberOfNights, int price, String name) {
-        this.date = new Date();
-        this.numberOfNights = numberOfNights;
-        this.price = price;
-        this.name=name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     
+    private List<User> users = new ArrayList<>();
+
+        public BookingDTO( int numberOfNights, int price, String name) {
+            
+            this.numberOfNights = numberOfNights;
+            this.price = price;
+            this.name=name;
+        }
+    public BookingDTO(Booking b) {
+            this.date = b.getDate();
+            this.numberOfNights = b.getNumberOfNights();
+            this.price = b.getPrice();
+        }
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
     public Long getId() {
         return id;
     }
@@ -60,6 +58,14 @@ public class Booking implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setDate(Date date) {
@@ -81,7 +87,4 @@ public class Booking implements Serializable {
     public void setPrice(int price) {
         this.price = price;
     }
-
-    
-    
-}
+    }

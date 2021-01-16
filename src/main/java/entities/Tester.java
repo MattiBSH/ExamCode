@@ -20,13 +20,12 @@ public class Tester {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         
-        Hotel one = new Hotel(new ArrayList(), "Test1");
-        Many many = new Many("Test1");
+        Booking b = new Booking(1,1,"");
         
-        one.addMany(many);
+        
 
         em.getTransaction().begin();
-        em.persist(one);
+        em.persist(b);
         em.getTransaction().commit();
         
     }

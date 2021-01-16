@@ -1,5 +1,6 @@
 package rest;
 
+import DTO.BookingDTO;
 import DTO.HotelDTO;
 import DTO.OneDTO;
 import com.google.gson.Gson;
@@ -50,5 +51,13 @@ public class DefaultResource {
         return GSON.toJson(list);
     }
     
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String addBooking(String booking) throws IOException, InterruptedException, ExecutionException {
+        BookingDTO bDTO = GSON.fromJson(booking, BookingDTO.class);        
+        facade2.add(bDTO);
+        return GSON.toJson(bDTO);
+    }
     
 }
