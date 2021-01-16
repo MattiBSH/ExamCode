@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
  
@@ -65,6 +66,14 @@ public class DefaultResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getBookings(@PathParam("name") String name ) throws IOException, InterruptedException, ExecutionException {
+        ArrayList<BookingDTO> list =facade2.getAll(name);
+        return GSON.toJson(list);
+    }
+    @Path("/bookingsad/{name}")
+    @RolesAllowed("Admin")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBookingsAdmin(@PathParam("name") String name ) throws IOException, InterruptedException, ExecutionException {
         ArrayList<BookingDTO> list =facade2.getAll(name);
         return GSON.toJson(list);
     }
