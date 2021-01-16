@@ -40,6 +40,7 @@ public class BookingDTO {
             this.date = b.getDate();
             this.numberOfNights = b.getNumberOfNights();
             this.price = b.getPrice();
+            this.name=b.getName();
         }
     public List<User> getUsers() {
         return users;

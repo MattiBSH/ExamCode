@@ -17,8 +17,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
  
 /**
  * REST Web Service
@@ -59,5 +61,11 @@ public class DefaultResource {
         facade2.add(bDTO);
         return GSON.toJson(bDTO);
     }
-    
+    @Path("/bookings/{name}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBookings(@PathParam("name") String name ) throws IOException, InterruptedException, ExecutionException {
+        ArrayList<BookingDTO> list =facade2.getAll(name);
+        return GSON.toJson(list);
+    }
 }

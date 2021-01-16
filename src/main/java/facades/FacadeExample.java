@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 import utils.HttpUtils;
 
@@ -47,10 +48,27 @@ public class FacadeExample {
         e.getTransaction().commit();
         
     }
+    public ArrayList<BookingDTO>getAll(String name){
+        EntityManager e = emf.createEntityManager();
+        e.getTransaction().begin();
+         TypedQuery<Booking> query = e.createQuery(
+        "SELECT c FROM Booking c WHERE c.name = '" + name + "'",
+        Booking.class);
+
+        e.getTransaction().commit();
+        ArrayList<BookingDTO>list= new ArrayList<>();
+        for (Booking b : query.getResultList()) {
+            
+            list.add(new BookingDTO(b));
+        }
+        return  list;
+        
+    }
     public static void main(String[] args) throws IOException {
         FacadeExample f = new FacadeExample();
         BookingDTO b = new BookingDTO(1,1,"ookokok");
         f.add(b);
+        System.out.println(f.getAll("matti"));
         
     }
 }
