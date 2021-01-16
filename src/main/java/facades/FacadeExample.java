@@ -34,7 +34,7 @@ public class FacadeExample {
     public String fetchHotels() throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<HotelDTO> hotels = new ArrayList();
-        String url = "https://exam.cphdat.dk/hotel/all";
+        String url = "http://exam.cphdat.dk:8000/hotel/all";
         String raw = HttpUtils.fetchData(url);        
         return raw;
     }
