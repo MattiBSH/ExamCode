@@ -1,7 +1,10 @@
 package rest;
 
+import DTO.HotelDTO;
+import DTO.OneDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import facades.FacadeExample;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import javax.ws.rs.core.Context;
@@ -14,6 +17,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import facades.FetchFacade;
 import java.util.List;
+import javax.ws.rs.POST;
  
 /**
  * REST Web Service
@@ -23,6 +27,8 @@ import java.util.List;
 @Path("default")
 public class DefaultResource {
     private final FetchFacade facade = new FetchFacade();
+    private final FacadeExample facade2 = new FacadeExample();
+
     private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Context
@@ -36,5 +42,13 @@ public class DefaultResource {
         return GSON.toJson(list);
     }
 
-   
+    @Path("/hotels")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getHotels() throws IOException, InterruptedException, ExecutionException {
+        String list =facade2.fetchHotels();
+        return GSON.toJson(list);
+    }
+    
+    
 }

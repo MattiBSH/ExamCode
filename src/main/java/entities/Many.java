@@ -26,7 +26,7 @@ public class Many implements Serializable {
     private String name;
     
     @ManyToOne
-    private One one;
+    private Hotel one;
 
     public Many(String name) {
         this.name = name;
@@ -45,11 +45,11 @@ public class Many implements Serializable {
     
     
 
-    public One getOne() {
+    public Hotel getOne() {
         return one;
     }
 
-    public void setOne(One one) {
+    public void setOne(Hotel one) {
         this.one = one;
     }
     

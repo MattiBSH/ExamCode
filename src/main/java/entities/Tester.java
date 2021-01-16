@@ -20,7 +20,7 @@ public class Tester {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         
-        One one = new One(new ArrayList(), "Test1");
+        Hotel one = new Hotel(new ArrayList(), "Test1");
         Many many = new Many("Test1");
         
         one.addMany(many);

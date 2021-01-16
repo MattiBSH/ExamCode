@@ -5,6 +5,7 @@
  */
 package entities;
 
+import DTO.OneDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +21,28 @@ import javax.persistence.OneToMany;
  * @author Mathias
  */
 @Entity
-public class One implements Serializable {
+public class Hotel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String address;
+    private int phone;
     
     @OneToMany(mappedBy = "one", cascade = CascadeType.PERSIST)
     private List<Many> many;
 
-    public One(List<Many> many, String name) {
+    public Hotel(List<Many> many, String name) {
         this.many = new ArrayList();
         this.name = name;
     }
-
-    public One() {
+    public Hotel(OneDTO d) {
+        this.many = d.getMany();
+        this.name = d.getName();
+    }
+    public Hotel() {
     }
 
     public String getName() {
@@ -87,10 +93,10 @@ public class One implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof One)) {
+        if (!(object instanceof Hotel)) {
             return false;
         }
-        One other = (One) object;
+        Hotel other = (Hotel) object;
         if (this.id != other.id) {
             return false;
         }
